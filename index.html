@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KPO ENPROM - Formularz</title>
+    <title>KPO ENPROM - Mobile</title>
     <style>
         body {
             font-family: "Century Gothic", AppleGothic, sans-serif;
@@ -31,11 +31,22 @@
             margin-top: 0;
         }
 
+        .warning-info {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            text-align: center;
+            margin-bottom: 15px;
+            border: 1px solid #ffeeba;
+        }
+
         h3 {
             font-size: 0.85em;
             color: #555;
             text-transform: uppercase;
-            margin-top: 20px;
+            margin-top: 25px;
             border-left: 4px solid #004481;
             padding-left: 10px;
             letter-spacing: 1px;
@@ -50,17 +61,23 @@
 
         input, select, textarea {
             width: 100%;
-            height: 50px;
-            padding: 12px;
+            height: 45px;
+            padding: 10px;
             border: 2px solid #ddd;
             border-radius: 10px;
             font-size: 16px;
-            font-family: "Century Gothic", sans-serif;
+            font-family: inherit;
             box-sizing: border-box;
             background: #fff;
         }
 
-        textarea { height: auto; padding: 10px; }
+        .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .row div { flex: 1; }
 
         .sap-box {
             background: #e7f3ff;
@@ -73,6 +90,22 @@
             border: 1px solid #b3d7ff;
         }
 
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px dashed #ccc;
+        }
+
+        .checkbox-container input {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
         button {
             width: 100%;
             height: 65px;
@@ -82,7 +115,6 @@
             border-radius: 12px;
             font-size: 18px;
             font-weight: bold;
-            font-family: "Century Gothic", sans-serif;
             cursor: pointer;
             margin-top: 25px;
             box-shadow: 0 4px 10px rgba(40,167,69,0.3);
@@ -102,45 +134,49 @@
 
 <div class="card">
     <h2>Zgłoszenie KPO</h2>
+    <div class="warning-info">ℹ️ Formularz przesyła dane do biura w celu wystawienia karty w systemie BDO.</div>
     
     <form id="kpoForm">
-        <!-- 1. BUDOWA -->
-        <h3>1. Projekt i Lokalizacja</h3>
-        <label>Wytwarzający (Stacja/Budowa):</label>
-        <select id="project_select" onchange="updateSap()">
+        <h3>1. Wytwarzający (Budowa)</h3>
+        <label>Projekt:</label>
+        <select id="project_select" onchange="updateProjectData()">
             <option value="" data-sap="">-- Wybierz projekt --</option>
-            <option value="232751 Bałtyk II&III" data-sap="232751">232751 Bałtyk II&III</option>
-            <option value="211271 Baltic Power" data-sap="211271">211271 Baltic Power</option>
-            <option value="223381 CCGT Grudziądz" data-sap="223381">223381 CCGT Grudziądz</option>
-            <option value="233026 CCGT Ostrołęka" data-sap="233026">233026 CCGT Ostrołęka</option>
-            <option value="235415 SE_Bałtyk II_Hitachi" data-sap="235415">235415 SE_Bałtyk II_Hitachi</option>
-            <option value="235926 SE Leszno_Gronowo" data-sap="222222">235926 SE Leszno (SAP: 222222)</option>
-            <option value="244756 SE Polkowice" data-sap="244756">244756 SE Polkowice</option>
-            <option value="245165 Rokitnica" data-sap="245165">245165 Rokitnica</option>
-            <option value="250380 Słupsk 400kV450kV" data-sap="250380">250380 Słupsk 400kV450kV</option>
-            <option value="203002 150kV BBR-KAS" data-sap="203002">203002 150kV BBR-KAS</option>
-            <option value="220042 CPK" data-sap="220042">220042 CPK</option>
-            <option value="232751 Kabel Equinor" data-sap="232751">232751 Kabel Equinor</option>
-            <option value="234011 380 kV LE Stade" data-sap="234011">234011 380 kV LE Stade</option>
-            <option value="234321 LE Kabl 230kV BLP" data-sap="234321">234321 LE Kabl 230kV BLP</option>
-            <option value="234372 S19" data-sap="234372">234372 S19</option>
-            <option value="242931 KCPD NASK" data-sap="242931">242931 KCPD NASK</option>
-            <option value="244312 110kV Bolesławiec" data-sap="244312">244312 110kV Bolesławiec</option>
-            <option value="244668 Baltic I Onshore" data-sap="244668">244668 Baltic I Onshore</option>
-            <option value="250001 Bud. L400kV Choczewo" data-sap="250001">250001 L400kV Choczewo</option>
-            <option value="250002 Trębaczew Rokitnica" data-sap="250002">250002 Trębaczew Rokitnica</option>
-            <option value="250094 PT Luzino" data-sap="250094">250094 PT Luzino</option>
-            <option value="250147 Chełm" data-sap="250147">250147 Chełm</option>
-            <option value="250415 Modernizacja L110 Siersza" data-sap="250415">250415 L110 Siersza</option>
-            <option value="250441 Radzyń łuków 110kV" data-sap="250441">250441 Radzyń łuków 110kV</option>
-            <option value="250631 LE Choczewo Słupsk" data-sap="250631">250631 LE Choczewo Słupsk</option>
-            <option value="250671 LK400 ME Kartoszyn" data-sap="250671">250671 LK400 ME Kartoszyn</option>
-            <option value="251260 Orlen Płock" data-sap="251260">251260 Orlen Płock</option>
-            <option value="251446 LN 110kVCzechnica" data-sap="251446">251446 LN 110kVCzechnica</option>
+            <!-- NOWY PROJEKT -->
+            <option value="SE Leszno Gronówko" 
+                    data-sap="240030" 
+                    data-ulica="Gronówko 30" 
+                    data-kod="64-111" 
+                    data-miasto="Lipno" 
+                    data-woj="wielkopolskie">240030 SE Leszno Gronówko</option>
+            <option value="SE Polkowice" 
+                    data-sap="244756" 
+                    data-ulica="ul. Energetyków 4" 
+                    data-kod="59-101" 
+                    data-miasto="Polkowice" 
+                    data-woj="dolnośląskie">244756 SE Polkowice</option>
+            <option value="Bałtyk II&III" data-sap="232751">232751 Bałtyk II&III</option>
+            <option value="Baltic Power" data-sap="211271">211271 Baltic Power</option>
         </select>
+        
         <div class="sap-box">NR SAP: <span id="display_sap">---</span></div>
 
-        <!-- 2. ODPAD -->
+        <label>Ulica i nr:</label>
+        <input type="text" id="w_ulica" placeholder="ul. Przykładowa 1">
+        
+        <div class="row">
+            <div>
+                <label>Kod pocztowy:</label>
+                <input type="text" id="w_kod" placeholder="00-000">
+            </div>
+            <div>
+                <label>Miasto:</label>
+                <input type="text" id="w_miasto" placeholder="Miasto">
+            </div>
+        </div>
+
+        <label>Województwo:</label>
+        <input type="text" id="w_woj" placeholder="Województwo">
+
         <h3>2. Dane Odpadu</h3>
         <label>Kod odpadu:</label>
         <select id="kod_odpadu">
@@ -152,78 +188,124 @@
             <option value="15 01 01 (Papier)">15 01 01 - Papier/Tektura</option>
         </select>
 
-        <label>Masa odpadu [Mg / tony]:</label>
-        <input type="number" id="masa" step="0.0001" placeholder="0,0000" oninput="limitDecimal(this, 4)">
+        <div class="row">
+            <div>
+                <label>Masa [Mg]:</label>
+                <!-- Zmienione na 4 miejsca po przecinku -->
+                <input type="number" id="masa" step="0.0001" placeholder="0,0000">
+            </div>
+            <div>
+                <label>Nr rej. pojazdu:</label>
+                <input type="text" id="nr_rej" placeholder="np. PO 12345">
+            </div>
+        </div>
 
-        <!-- 3. TRANSPORT -->
-        <h3>3. Logistyka</h3>
-        <label>Numer rejestracyjny:</label>
-        <input type="text" id="nr_rej" placeholder="np. PO 12345">
-
-        <label>Godzina rozpoczęcia:</label>
+        <label>Godzina rozpoczęcia transportu:</label>
         <input type="time" id="godzina">
 
-        <!-- 4. PODMIOTY -->
-        <h3>4. Przejmujący / Transport</h3>
-        <label>Baza firm:</label>
-        <select id="firma_baza" onchange="fillFirma()">
+        <h3>3. Transportujący</h3>
+        <label>Wybierz firmę:</label>
+        <select id="transport_baza" onchange="fillTransport()">
             <option value="">-- Wpisz ręcznie --</option>
-            <option value="Remondis" data-bdo="000001234" data-addr="ul. Poznańska 1, Poznań">Remondis</option>
-            <option value="M-EKO" data-bdo="000005678" data-addr="ul. Kolejowa 12, Swarzędz">M-EKO</option>
+            <option value="Remondis" data-bdo="000001234">Remondis</option>
+            <option value="M-EKO" data-bdo="000005678">M-EKO</option>
         </select>
+        <input type="text" id="t_nazwa" placeholder="Nazwa firmy transportowej">
+        <input type="text" id="t_bdo" placeholder="Nr BDO transportującego">
 
-        <input type="text" id="f_nazwa" placeholder="Nazwa firmy">
-        <input type="text" id="f_bdo" placeholder="Nr BDO">
-        <textarea id="f_adres" placeholder="Adres zakładu" rows="2"></textarea>
+        <h3>4. Przejmujący (Odbiorca)</h3>
+        <div class="checkbox-container">
+            <input type="checkbox" id="same_as_trans" onchange="syncReceiver()">
+            <label for="same_as_trans" style="margin:0; font-size: 0.85em;">Odbiorca to ten sam podmiot co transport</label>
+        </div>
+        
+        <input type="text" id="o_nazwa" placeholder="Nazwa firmy przejmującej">
+        <input type="text" id="o_bdo" placeholder="Nr BDO przejmującego">
+        <textarea id="o_adres" placeholder="Pełny adres zakładu odbiorczego" rows="2"></textarea>
 
         <h3>5. Inne</h3>
         <label>Uwagi:</label>
-        <textarea id="uwagi" placeholder="Dodatkowe informacje..." rows="3"></textarea>
+        <textarea id="uwagi" placeholder="Dodatkowe informacje..." rows="2"></textarea>
 
-        <button type="button" onclick="sendEmail()">WYŚLIJ ZGŁOSZENIE</button>
+        <button type="button" onclick="sendEmail()">WYŚLIJ ZGŁOSZENIE (MAIL)</button>
 
-        <div class="footer-note">Zgłoszenie trafi do s.korab@enprom.pl</div>
+        <div class="footer-note">Zgłoszenie do: Biuro, P. Kowaluk, T. Rzepliński</div>
     </form>
 </div>
 
 <script>
-    function updateSap() {
+    window.onload = () => {
+        const now = new Date();
+        document.getElementById('godzina').value = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+    };
+
+    function updateProjectData() {
         const sel = document.getElementById('project_select');
-        const sap = sel.options[sel.selectedIndex].getAttribute('data-sap');
-        document.getElementById('display_sap').innerText = sap || "---";
+        const opt = sel.options[sel.selectedIndex];
+        
+        document.getElementById('display_sap').innerText = opt.getAttribute('data-sap') || "---";
+        document.getElementById('w_ulica').value = opt.dataset.ulica || "";
+        document.getElementById('w_kod').value = opt.dataset.kod || "";
+        document.getElementById('w_miasto').value = opt.dataset.miasto || "";
+        document.getElementById('w_woj').value = opt.dataset.woj || "";
     }
 
-    function limitDecimal(el, max) {
-        if (el.value.indexOf(".") !== -1) {
-            if (el.value.split(".")[1].length > max) {
-                el.value = parseFloat(el.value).toFixed(max);
-            }
+    function fillTransport() {
+        const sel = document.getElementById('transport_baza');
+        const opt = sel.options[sel.selectedIndex];
+        document.getElementById('t_nazwa').value = sel.value || "";
+        document.getElementById('t_bdo').value = opt.dataset.bdo || "";
+        
+        if(document.getElementById('same_as_trans').checked) {
+            syncReceiver();
         }
     }
 
-    function fillFirma() {
-        const sel = document.getElementById('firma_baza');
-        const opt = sel.options[sel.selectedIndex];
-        document.getElementById('f_nazwa').value = sel.value || "";
-        document.getElementById('f_bdo').value = opt.dataset.bdo || "";
-        document.getElementById('f_adres').value = opt.dataset.addr || "";
+    function syncReceiver() {
+        const isSame = document.getElementById('same_as_trans').checked;
+        const oNazwa = document.getElementById('o_nazwa');
+        const oBdo = document.getElementById('o_bdo');
+
+        if(isSame) {
+            oNazwa.value = document.getElementById('t_nazwa').value;
+            oBdo.value = document.getElementById('t_bdo').value;
+            oNazwa.readOnly = true;
+            oBdo.readOnly = true;
+            oNazwa.style.background = "#f0f0f0";
+            oBdo.style.background = "#f0f0f0";
+        } else {
+            oNazwa.readOnly = false;
+            oBdo.readOnly = false;
+            oNazwa.style.background = "#fff";
+            oBdo.style.background = "#fff";
+        }
     }
 
     function sendEmail() {
-        const email = "s.korab@enprom.pl";
+        // Konfiguracja adresatów
+        const to = "s.korab@enprom.pl,p.kowaluk@enprom.pl,t.rzeplinski@enprom.pl";
+        const cc = "m.ewiak@enprom.pl";
+        
         const budowa = document.getElementById('project_select').value;
         const sap = document.getElementById('display_sap').innerText;
+        const w_adr = `${document.getElementById('w_ulica').value}, ${document.getElementById('w_kod').value} ${document.getElementById('w_miasto').value} (${document.getElementById('w_woj').value})`;
+        
         const odpad = document.getElementById('kod_odpadu').value;
         const masa = document.getElementById('masa').value;
         const nrRej = document.getElementById('nr_rej').value;
         const godzina = document.getElementById('godzina').value;
-        const fNazwa = document.getElementById('f_nazwa').value;
-        const fBdo = document.getElementById('f_bdo').value;
-        const fAdres = document.getElementById('f_adres').value;
+        
+        const tNazwa = document.getElementById('t_nazwa').value;
+        const tBdo = document.getElementById('t_bdo').value;
+        
+        const oNazwa = document.getElementById('o_nazwa').value;
+        const oBdo = document.getElementById('o_bdo').value;
+        const oAdres = document.getElementById('o_adres').value;
+        
         const uwagi = document.getElementById('uwagi').value;
 
-        if(!budowa || !odpad || !nrRej || !masa) {
-            alert("Uzupełnij Budowę, Odpad, Masę i Nr Rejestracyjny!");
+        if(!budowa || !odpad || !nrRej || !masa || !oNazwa || !tNazwa) {
+            alert("BŁĄD: Uzupełnij Projekt, Odpad, Masę, Pojazd oraz firmy!");
             return;
         }
 
@@ -231,29 +313,35 @@
         
         const body = `DANE DO WYSTAWIENIA KARTY KPO
 ==========================================
-PROJEKT:      ${budowa}
-NR SAP:       ${sap}
+1. WYTWARZAJĄCY (BUDOWA):
+Projekt:  ${budowa}
+NR SAP:   ${sap}
+Adres:    ${w_adr}
 ==========================================
-ODPAD:        ${odpad}
-MASA [Mg]:    ${masa}
-POJAZD:       ${nrRej}
-GODZINA:      ${godzina}
+2. DANE ODPADU:
+Kod:      ${odpad}
+Masa:     ${masa} Mg
+Pojazd:   ${nrRej}
+Godzina:  ${godzina}
 ==========================================
-PRZEJMUJĄCY:  ${fNazwa}
-NR BDO:       ${fBdo}
-ADRES:        ${fAdres}
+3. TRANSPORTUJĄCY:
+Firma:    ${tNazwa}
+BDO:      ${tBdo}
+==========================================
+4. PRZEJMUJĄCY (ODBIORCA):
+Firma:    ${oNazwa}
+BDO:      ${oBdo}
+Adres:    ${oAdres}
 ==========================================
 UWAGI:
 ${uwagi || 'brak'}
-==========================================`;
 
-        window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+------------------------------------------
+Wysłano z formularza mobilnego ENPROM.`;
+
+        // Link mailto z obsługą DW (cc)
+        window.location.href = `mailto:${to}?cc=${cc}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
-
-    window.onload = () => {
-        const now = new Date();
-        document.getElementById('godzina').value = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-    };
 </script>
 
 </body>
