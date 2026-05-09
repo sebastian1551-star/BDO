@@ -71,6 +71,8 @@
             background: #fff;
         }
 
+        textarea { height: auto; }
+
         .row {
             display: flex;
             gap: 10px;
@@ -141,7 +143,6 @@
         <label>Projekt:</label>
         <select id="project_select" onchange="updateProjectData()">
             <option value="" data-sap="">-- Wybierz projekt --</option>
-            <!-- NOWY PROJEKT -->
             <option value="SE Leszno Gronówko" 
                     data-sap="240030" 
                     data-ulica="Gronówko 30" 
@@ -191,7 +192,6 @@
         <div class="row">
             <div>
                 <label>Masa [Mg]:</label>
-                <!-- Zmienione na 4 miejsca po przecinku -->
                 <input type="number" id="masa" step="0.0001" placeholder="0,0000">
             </div>
             <div>
@@ -219,9 +219,14 @@
             <label for="same_as_trans" style="margin:0; font-size: 0.85em;">Odbiorca to ten sam podmiot co transport</label>
         </div>
         
+        <label>Nazwa Odbiorcy:</label>
         <input type="text" id="o_nazwa" placeholder="Nazwa firmy przejmującej">
+        
+        <label>Nr BDO Odbiorcy:</label>
         <input type="text" id="o_bdo" placeholder="Nr BDO przejmującego">
-        <textarea id="o_adres" placeholder="Pełny adres zakładu odbiorczego" rows="2"></textarea>
+        
+        <label>Miejsce Prowadzenia Działalności (MPD):</label>
+        <textarea id="o_adres" placeholder="Dokładny adres zakładu/miejsca odbioru odpadu" rows="2"></textarea>
 
         <h3>5. Inne</h3>
         <label>Uwagi:</label>
@@ -282,8 +287,7 @@
     }
 
     function sendEmail() {
-        // Konfiguracja adresatów
-        const to = "s.korab@enprom.pl,p.kowaluk@enprom.pl,t.rzeplinski@enprom.pl";
+        const to = "s.korab@enprom.pl;p.kowaluk@enprom.pl;t.rzeplinski@enprom.pl";
         const cc = "m.ewiak@enprom.pl";
         
         const budowa = document.getElementById('project_select').value;
@@ -304,8 +308,8 @@
         
         const uwagi = document.getElementById('uwagi').value;
 
-        if(!budowa || !odpad || !nrRej || !masa || !oNazwa || !tNazwa) {
-            alert("BŁĄD: Uzupełnij Projekt, Odpad, Masę, Pojazd oraz firmy!");
+        if(!budowa || !odpad || !nrRej || !masa || !oNazwa || !tNazwa || !oAdres) {
+            alert("BŁĄD: Uzupełnij Projekt, Odpad, Masę, Pojazd oraz pełne dane Odbiorcy (w tym MPD)!");
             return;
         }
 
@@ -331,7 +335,8 @@ BDO:      ${tBdo}
 4. PRZEJMUJĄCY (ODBIORCA):
 Firma:    ${oNazwa}
 BDO:      ${oBdo}
-Adres:    ${oAdres}
+MPD (Miejsce Odbioru): 
+${oAdres}
 ==========================================
 UWAGI:
 ${uwagi || 'brak'}
@@ -339,7 +344,6 @@ ${uwagi || 'brak'}
 ------------------------------------------
 Wysłano z formularza mobilnego ENPROM.`;
 
-        // Link mailto z obsługą DW (cc)
         window.location.href = `mailto:${to}?cc=${cc}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
 </script>
